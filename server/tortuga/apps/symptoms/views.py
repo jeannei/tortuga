@@ -25,10 +25,42 @@ class SymptomView(generics.RetrieveAPIView):
     serializer_class = SymptomSerializer
 
     def get(self, request, *args, **kwargs):
+        """
+        Get symptom by id or not found
+        """
         pk = kwargs["id"]
         try:
-            a_symptom = self.queryset.get(pk=pk)
-            return Response(SymptomSerializer(a_symptom).data)
+            symptom = self.queryset.get(pk=pk)
+            return Response(SymptomSerializer(symptom).data)
+        except Symptom.DoesNotExist:
+            return Response(
+                data={"message": "Symptom with id: {} does not exist".format(pk)},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+
+class SymptomConfirmView(generics.UpdateAPIView):
+    """
+    PUT symptoms/:id/confirm
+    """
+    queryset = Symptom.objects.all()
+    serializer_class = SymptomSerializer
+
+    def put(self, request, *args, **kwargs):
+        """
+        Update target symptom frequency
+        """
+        # current_symptom = get_symptom(kwargs["id"], False)
+        # print(current_symptom)
+        # serializer = SymptomSerializer()
+        # updated_symptom = serializer.update(current_symptom, request.data)
+        # return Response(status.HTTP_204_NO_CONTENT)
+        pk = kwargs["id"]
+        try:
+            current_symptom = self.queryset.get(pk=pk)
+            serializer = SymptomSerializer()
+            updated_symptom = serializer.update(current_symptom, {"frequency": current_symptom.frequency + 1})
+            return Response(SymptomSerializer(updated_symptom).data)
         except Symptom.DoesNotExist:
             return Response(
                 data={"message": "Symptom with id: {} does not exist".format(pk)},

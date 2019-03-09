@@ -8,7 +8,7 @@ from tortuga.apps.symptoms.serializer import SymptomSerializer
 from tortuga.apps.symptoms.__tests__.base import BaseViewTest, API_VERSION_V1, VERSION
 
 ID = "id"
-SYMPTOM_DETAIL = "symptom-detail"
+ENDPOINT = "symptom-detail"
 
 
 class SymptomViewTest(BaseViewTest):
@@ -21,7 +21,7 @@ class SymptomViewTest(BaseViewTest):
         """
         # hit the API endpoint
         response = self.client.get(
-            reverse(SYMPTOM_DETAIL, kwargs={VERSION: API_VERSION_V1, ID: self.valid_symptom_id})
+            reverse(ENDPOINT, kwargs={VERSION: API_VERSION_V1, ID: self.valid_symptom_id})
         )
         # fetch the data from db
         expected = Symptom.objects.get(id=self.valid_symptom_id)
@@ -35,7 +35,7 @@ class SymptomViewTest(BaseViewTest):
         """
         # hit the API endpoint
         response = self.client.get(
-            reverse(SYMPTOM_DETAIL, kwargs={VERSION: API_VERSION_V1, ID: self.valid_symptom_id_alt})
+            reverse(ENDPOINT, kwargs={VERSION: API_VERSION_V1, ID: self.valid_symptom_id_alt})
         )
         # fetch the data from db
         expected = Symptom.objects.get(id=self.valid_symptom_id_alt)
@@ -49,7 +49,7 @@ class SymptomViewTest(BaseViewTest):
         """
         # hit the API endpoint
         response = self.client.get(
-            reverse(SYMPTOM_DETAIL, kwargs={VERSION: API_VERSION_V1, ID: self.invalid_symptom_id})
+            reverse(ENDPOINT, kwargs={VERSION: API_VERSION_V1, ID: self.invalid_symptom_id})
         )
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
@@ -60,7 +60,7 @@ class SymptomViewTest(BaseViewTest):
         """
         # hit the API endpoint
         response = self.client.post(
-            reverse(SYMPTOM_DETAIL, kwargs={VERSION: API_VERSION_V1, ID: self.valid_symptom_id})
+            reverse(ENDPOINT, kwargs={VERSION: API_VERSION_V1, ID: self.valid_symptom_id})
         )
 
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
@@ -71,7 +71,7 @@ class SymptomViewTest(BaseViewTest):
         """
         # hit the API endpoint
         response = self.client.post(
-            reverse(SYMPTOM_DETAIL, kwargs={VERSION: API_VERSION_V1, ID: self.valid_symptom_id})
+            reverse(ENDPOINT, kwargs={VERSION: API_VERSION_V1, ID: self.valid_symptom_id})
         )
 
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
@@ -82,7 +82,7 @@ class SymptomViewTest(BaseViewTest):
         """
         # hit the API endpoint
         response = self.client.post(
-            reverse(SYMPTOM_DETAIL, kwargs={VERSION: API_VERSION_V1, ID: self.valid_symptom_id})
+            reverse(ENDPOINT, kwargs={VERSION: API_VERSION_V1, ID: self.valid_symptom_id})
         )
 
         self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)

@@ -8,7 +8,7 @@ from tortuga.apps.symptoms.serializer import SymptomSerializer
 from tortuga.apps.symptoms.__tests__.base import BaseViewTest, API_VERSION_V1, VERSION
 
 
-SYMPTOMS_ALL = "symptoms-all"
+ENDPOINT = "symptoms-all"
 
 
 class SymptomsViewTest(BaseViewTest):
@@ -21,7 +21,7 @@ class SymptomsViewTest(BaseViewTest):
         exist when we make a GET request to the symptoms/ endpoint
         """
         # hit the API endpoint
-        response = self.client.get(reverse(SYMPTOMS_ALL, kwargs={VERSION: API_VERSION_V1}))
+        response = self.client.get(reverse(ENDPOINT, kwargs={VERSION: API_VERSION_V1}))
         # fetch the data from db
         expected = Symptom.objects.all()
         serialized = SymptomSerializer(expected, many=True)
@@ -34,7 +34,7 @@ class SymptomsViewTest(BaseViewTest):
         """
         # hit the API endpoint
         response = self.client.post(
-            reverse(SYMPTOMS_ALL, kwargs={VERSION: API_VERSION_V1}),
+            reverse(ENDPOINT, kwargs={VERSION: API_VERSION_V1}),
             {"name": "test 4", "frequency": 0}
         )
 
@@ -46,7 +46,7 @@ class SymptomsViewTest(BaseViewTest):
         """
         # hit the API endpoint
         response = self.client.delete(
-            reverse(SYMPTOMS_ALL, kwargs={VERSION: API_VERSION_V1}),
+            reverse(ENDPOINT, kwargs={VERSION: API_VERSION_V1}),
             {"name": "test 4", "frequency": 0}
         )
 
@@ -58,7 +58,7 @@ class SymptomsViewTest(BaseViewTest):
         """
         # hit the API endpoint
         response = self.client.delete(
-            reverse(SYMPTOMS_ALL, kwargs={VERSION: API_VERSION_V1}),
+            reverse(ENDPOINT, kwargs={VERSION: API_VERSION_V1}),
             {"name": "test 4", "frequency": 0}
         )
 
