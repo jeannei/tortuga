@@ -8,6 +8,7 @@ authors = ["Jean Nei <jeanbhs09@gmail.com>"]
 python = "^3.6"
 django = "^2.1"
 djangorestframework = "^3.9"
+django-cors-headers = "^2.5"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
