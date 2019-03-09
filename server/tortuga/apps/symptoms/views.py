@@ -50,11 +50,6 @@ class SymptomConfirmView(generics.UpdateAPIView):
         """
         Update target symptom frequency
         """
-        # current_symptom = get_symptom(kwargs["id"], False)
-        # print(current_symptom)
-        # serializer = SymptomSerializer()
-        # updated_symptom = serializer.update(current_symptom, request.data)
-        # return Response(status.HTTP_204_NO_CONTENT)
         primary_key = kwargs["id"]
         try:
             current_symptom = self.queryset.get(pk=primary_key)

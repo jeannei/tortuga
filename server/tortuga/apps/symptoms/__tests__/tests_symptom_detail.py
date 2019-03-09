@@ -70,7 +70,7 @@ class SymptomViewTest(BaseViewTest):
         This test ensures users cannot delete symptoms
         """
         # hit the API endpoint
-        response = self.client.post(
+        response = self.client.delete(
             reverse(ENDPOINT, kwargs={VERSION: API_VERSION_V1, ID: self.valid_symptom_id})
         )
 
@@ -81,7 +81,7 @@ class SymptomViewTest(BaseViewTest):
         This test ensures users cannot update symptoms
         """
         # hit the API endpoint
-        response = self.client.post(
+        response = self.client.put(
             reverse(ENDPOINT, kwargs={VERSION: API_VERSION_V1, ID: self.valid_symptom_id})
         )
 

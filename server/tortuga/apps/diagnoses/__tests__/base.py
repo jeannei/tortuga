@@ -36,6 +36,7 @@ class BaseViewTest(APITestCase):
         self.create_diagnosis(symptom, "viral throat infection", 5)
         self.create_diagnosis(symptom, "middle ear infection", 300)
         self.valid_symptom_id = 1
+        self.invalid_symptom_id = 200
         self.valid_diagnosis_id = 1
         self.valid_diagnosis_id_alt = 3
         self.invalid_diagnosis_id = 100

@@ -57,7 +57,7 @@ class SymptomsViewTest(BaseViewTest):
         This test ensures users cannot update symptoms
         """
         # hit the API endpoint
-        response = self.client.delete(
+        response = self.client.put(
             reverse(ENDPOINT, kwargs={VERSION: API_VERSION_V1}),
             {"name": "test 4", "frequency": 0}
         )

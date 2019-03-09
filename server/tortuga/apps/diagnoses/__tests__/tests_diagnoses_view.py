@@ -1,5 +1,5 @@
 """
-Tests for Diagnosis View
+Tests for Diagnoses View
 """
 from django.urls import reverse
 from rest_framework import status
@@ -61,3 +61,36 @@ class DiagnosesViewTest(BaseViewTest):
         serialized = DiagnosisSerializer(expected, many=True)
         self.assertEqual(response.data, serialized.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_post_diagnoses(self):
+        """
+        Post is not allowed
+        """
+        # hit the API endpoint
+        response = self.client.post(
+            reverse(ENDPOINT, kwargs={VERSION: API_VERSION_V1, SID: self.valid_symptom_id})
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_put_diagnoses(self):
+        """
+        Put is not allowed
+        """
+        # hit the API endpoint
+        response = self.client.put(
+            reverse(ENDPOINT, kwargs={VERSION: API_VERSION_V1, SID: self.valid_symptom_id})
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_delete_diagnoses(self):
+        """
+        Delete is not allowed
+        """
+        # hit the API endpoint
+        response = self.client.delete(
+            reverse(ENDPOINT, kwargs={VERSION: API_VERSION_V1, SID: self.valid_symptom_id})
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
