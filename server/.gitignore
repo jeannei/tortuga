@@ -1,3 +1,5 @@
+.python-version
+db.sqlite3
 .idea/*
 .venv/*
-.python-version
+**/__pycache__
