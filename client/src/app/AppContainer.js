@@ -11,33 +11,44 @@ function withDataHandlers(WrappedComponent) {
     constructor(props) {
       super(props);
       this.state = {
-        selectedValue: null,
         diagnoses: [],
+        isDialogOpen: false,
+        selectedSymptom: {},
         status: DONE
       };
     }
 
     confirmDiagnosis = async (diagnosis) => {
-      const { selectedValue, diagnoses } = this.state;
+      const { selectedSymptom, diagnoses } = this.state;
       const { id } = diagnosis;
-      const sid = selectedValue.id;
+      const sid = selectedSymptom.id;
       const tempData = diagnoses.filter(item => item.id !== id);
-      const newData = [...newData, {...diagnosis, frequency: diagnosis.frequency + 1 }];
+      const newData = [...tempData, {...diagnosis, frequency: diagnosis.frequency + 1 }];
 
       this._sortDescending(newData);
       this.setState({ diagnoses: newData});
-      const { payload } = await makeRequest(`${API_BASE}/v1/symptoms/${sid}/diagnoses/${id}/confirm`);
+      await makeRequest(`${API_BASE}/v1/symptoms/${sid}/diagnoses/${id}/confirm`);
     }
 
-    fetchData = async (sid) => {
+    fetchDiagnoses = async (sid) => {
+      this.setState({ status: LOADING });
       const { payload } = await makeRequest(`${API_BASE}/v1/symptoms/${sid}/diagnoses`);
       this._sortDescending(payload);
-      this.setState({ diagnoses: payload, status: DONE });
+      this.setState({ diagnoses: payload, status: DONE, isDialogOpen: true });
+    }
+
+    handleCloseDialog = () => {
+      this.setState({ isDialogOpen: false, accepted: false });
+    };
+
+    handleCloseDialogConfirm = () => {
+      this.confirmDiagnosis();
+      this.setState({ isDialogOpen: false, accepted: true });
     }
 
     handleSelectChange = (value) => {
-      this.setState({ selectedValue: value });
-      this.fetchData(value.id);
+      this.setState({ selectedSymptom: value });
+      this.fetchDiagnoses(value.id);
     }
 
     _sortDescending(array) {
@@ -45,12 +56,16 @@ function withDataHandlers(WrappedComponent) {
     }
 
     render() {
-      const { diagnoses, status, selectedValue } = this.state;
+      const { diagnoses, isDialogOpen, status, selectedSymptom } = this.state;
       return <WrappedComponent
-        data={diagnoses}
-        status={status}
-        selectedValue={selectedValue}
+        confirmDiagnosis={this.confirmDiagnosis}
+        diagnoses={diagnoses}
+        handleCloseDialog={this.handleCloseDialog}
+        handleCloseDialogConfirm={this.handleCloseDialogConfirm}
         handleSelectChange={this.handleSelectChange}
+        isDialogOpen={isDialogOpen}
+        status={status}
+        selectedSymptom={selectedSymptom}
         {...this.props}
       />;
     }

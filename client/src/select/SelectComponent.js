@@ -26,8 +26,9 @@ const styles = theme => ({
 class SelectComponent extends Component {
   static propTypes = {
     data: PropTypes.array.isRequired,
-    status: PropTypes.string.isRequired,
-    handleChange: PropTypes.func.isRequired
+    disabled: PropTypes.bool,
+    handleChange: PropTypes.func.isRequired,
+    status: PropTypes.string.isRequired
   }
 
   state = {
@@ -58,14 +59,14 @@ class SelectComponent extends Component {
 
   render() {
     const { selectedValue } = this.state;
-    const { data, classes, label, status } = this.props;
+    const { data, classes, label, status, disabled } = this.props;
 
     return (
       <form className={classes.root} autoComplete='off'>
         <FormControl
           variant='outlined'
           className={classes.formControl}
-          disabled={status !== DONE }
+          disabled={status !== DONE || disabled }
           >
           <InputLabel ref={ref => { this.InputLabelRef = ref; }} >
             {label}
