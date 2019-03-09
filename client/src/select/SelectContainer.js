@@ -4,7 +4,7 @@ import { DONE, LOADING } from './SelectConstants';
 import configs from '../configs';
 import { makeRequest } from '../util/Request';
 
-const { API_BASE, NODE_ENV } = configs;
+const { API_BASE } = configs;
 
 function withDataHandlers(WrappedComponent) {
   return class extends Component {

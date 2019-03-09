@@ -26,7 +26,8 @@ const styles = theme => ({
 class SelectComponent extends Component {
   static propTypes = {
     data: PropTypes.array.isRequired,
-    status: PropTypes.string.isRequired
+    status: PropTypes.string.isRequired,
+    handleChange: PropTypes.func.isRequired
   }
 
   state = {
@@ -41,7 +42,9 @@ class SelectComponent extends Component {
   }
 
   handleChange = event => {
-    this.setState({ selectedValue: event.target.value });
+    const value = event.target.value;
+    this.setState({ selectedValue: value });
+    this.props.handleChange(value);
   };
 
   renderMenuItems = (items) => {
