@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 import styles from './App.css';
 import SelectComponent from '../select/SelectContainer';
 import Dialog from '../dialog/DialogComponent';
@@ -7,6 +10,7 @@ import Dialog from '../dialog/DialogComponent';
 export default class AppComponent extends Component {
   static propTypes = {
     diagnoses: PropTypes.array,
+    isDiagnosisConfirmed: PropTypes.bool,
     isDialogOpen: PropTypes.bool.isRequired,
     handleCloseDialog: PropTypes.func.isRequired,
     handleCloseDialogConfirm: PropTypes.func.isRequired,
@@ -32,12 +36,28 @@ export default class AppComponent extends Component {
     handleCloseDialogConfirm(topDiagnosis);
   }
 
+  renderDiagnosis(totalFrequencies, item, index) {
+    const text = `${item.name} - ${item.frequency / totalFrequencies * 100}%`
+    return <ListItemText key={index} primary={text} />
+  }
+
+  renderDiagnoses = () => {
+    const { diagnoses } = this.props;
+    const totalFrequencies = diagnoses.reduce((accum, curr) => accum += curr.frequency, 0);
+    return (
+        <List component="nav">
+          {diagnoses.map(this.renderDiagnosis.bind(null, totalFrequencies))}
+        </List>
+    );
+  }
+
   render() {
     const { topDiagnosis } = this.state;
     const {
       handleCloseDialog,
       handleSelectChange,
       isDialogOpen,
+      isDiagnosisConfirmed,
       selectedSymptom,
     } = this.props;
 
@@ -58,6 +78,7 @@ export default class AppComponent extends Component {
           isOpen={isDialogOpen}
           title={`You picked ${selectedSymptom.name}`}
         />
+        {isDiagnosisConfirmed && this.renderDiagnoses()}
       </div>
     );
   }

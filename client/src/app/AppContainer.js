@@ -12,6 +12,7 @@ function withDataHandlers(WrappedComponent) {
       super(props);
       this.state = {
         diagnoses: [],
+        isDiagnosisConfirmed: false,
         isDialogOpen: false,
         selectedSymptom: {},
         status: DONE
@@ -38,12 +39,12 @@ function withDataHandlers(WrappedComponent) {
     }
 
     handleCloseDialog = () => {
-      this.setState({ isDialogOpen: false, accepted: false });
+      this.setState({ isDialogOpen: false, isDiagnosisConfirmed: false });
     };
 
     handleCloseDialogConfirm = (diagnosis) => {
       this.confirmDiagnosis(diagnosis);
-      this.setState({ isDialogOpen: false, accepted: true });
+      this.setState({ isDialogOpen: false, isDiagnosisConfirmed: true });
     }
 
     handleSelectChange = (value) => {
@@ -56,13 +57,14 @@ function withDataHandlers(WrappedComponent) {
     }
 
     render() {
-      const { diagnoses, isDialogOpen, status, selectedSymptom } = this.state;
+      const { diagnoses, isDiagnosisConfirmed, isDialogOpen, status, selectedSymptom } = this.state;
       return <WrappedComponent
         confirmDiagnosis={this.confirmDiagnosis}
         diagnoses={diagnoses}
         handleCloseDialog={this.handleCloseDialog}
         handleCloseDialogConfirm={this.handleCloseDialogConfirm}
         handleSelectChange={this.handleSelectChange}
+        isDiagnosisConfirmed={isDiagnosisConfirmed}
         isDialogOpen={isDialogOpen}
         status={status}
         selectedSymptom={selectedSymptom}
