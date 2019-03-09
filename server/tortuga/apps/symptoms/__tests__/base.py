@@ -1,3 +1,7 @@
+"""
+Base test class for symptom contains common functions
+"""
+
 from rest_framework.test import APITestCase, APIClient
 from tortuga.apps.symptoms.models import Symptom
 
@@ -17,9 +21,9 @@ class BaseViewTest(APITestCase):
         Create symptom
         """
         if name != "" and frequency > 0:
-            Symptom.objects.create(name=name, frequency=frequency)
+            return Symptom.objects.create(name=name, frequency=frequency)
         else:
-            Symptom.objects.create(name=name)
+            return Symptom.objects.create(name=name)
 
     def setUp(self):
         """

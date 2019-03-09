@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'tortuga.apps.symptoms',
+    'tortuga.apps.diagnoses',
 ]
 
 MIDDLEWARE = [

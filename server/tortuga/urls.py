@@ -21,5 +21,6 @@ from django.urls import include, path, re_path
 # pylint: disable=C0103
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path('(?P<version>(v1))/', include('tortuga.apps.symptoms.urls'))
+    re_path('(?P<version>(v1))/', include('tortuga.apps.symptoms.urls')),
+    re_path('(?P<version>(v1))/', include('tortuga.apps.diagnoses.urls'))
 ]

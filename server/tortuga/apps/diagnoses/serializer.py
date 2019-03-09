@@ -1,18 +1,18 @@
 """
-Symptom serializer
+Diagnosis serializer
 """
 
 from rest_framework import serializers
-from tortuga.apps.symptoms.models import Symptom
+from tortuga.apps.diagnoses.models import Diagnosis
 
 
-class SymptomSerializer(serializers.ModelSerializer):
+class DiagnosisSerializer(serializers.ModelSerializer):
     """
-    Symptom serializer
+    Diagnosis serializer
     """
     class Meta:
         """
         Meta information about the diagnosis model
         """
-        model = Symptom
+        model = Diagnosis
         fields = ("id", "name", "frequency")
