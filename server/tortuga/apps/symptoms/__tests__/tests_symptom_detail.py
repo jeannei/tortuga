@@ -29,6 +29,20 @@ class SymptomViewTest(BaseViewTest):
         self.assertEqual(response.data, serialized.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+    def test_get_symptom_alt(self):
+        """
+        This tests retrieving a specific symptom that is not the first element
+        """
+        # hit the API endpoint
+        response = self.client.get(
+            reverse(SYMPTOM_DETAIL, kwargs={VERSION: API_VERSION_V1, ID: self.valid_symptom_id_alt})
+        )
+        # fetch the data from db
+        expected = Symptom.objects.get(id=self.valid_symptom_id_alt)
+        serialized = SymptomSerializer(expected)
+        self.assertEqual(response.data, serialized.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
     def test_invalid_get_symptom(self):
         """
         This tests retrieving an invalid symptom

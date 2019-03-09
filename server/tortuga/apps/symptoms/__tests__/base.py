@@ -29,4 +29,5 @@ class BaseViewTest(APITestCase):
         self.create_symptom("itchy rash", 5)
         self.create_symptom("runny nose", 300)
         self.valid_symptom_id = 1
+        self.valid_symptom_id_alt = 3
         self.invalid_symptom_id = 100
