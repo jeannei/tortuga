@@ -4,6 +4,9 @@ build:
 install:
 	@poetry install
 
+init-data:
+	@poetry run python manage.py load
+
 make-app:
 	@cd tortuga/apps && poetry run django-admin startapp $(NAME)
 
