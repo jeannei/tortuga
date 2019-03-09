@@ -27,7 +27,7 @@ function withDataHandlers(WrappedComponent) {
 
       this._sortDescending(newData);
       this.setState({ diagnoses: newData});
-      await makeRequest(`${API_BASE}/v1/symptoms/${sid}/diagnoses/${id}/confirm`);
+      await makeRequest(`${API_BASE}/v1/symptoms/${sid}/diagnoses/${id}/confirm`, {}, 'PUT');
     }
 
     fetchDiagnoses = async (sid) => {
@@ -41,8 +41,8 @@ function withDataHandlers(WrappedComponent) {
       this.setState({ isDialogOpen: false, accepted: false });
     };
 
-    handleCloseDialogConfirm = () => {
-      this.confirmDiagnosis();
+    handleCloseDialogConfirm = (diagnosis) => {
+      this.confirmDiagnosis(diagnosis);
       this.setState({ isDialogOpen: false, accepted: true });
     }
 
