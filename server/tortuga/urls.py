@@ -15,12 +15,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf.urls import url
 from django.urls import include, path, re_path
+from rest_framework.documentation import include_docs_urls
 
 # this constant must be lowercase for django to work correctly, so we tell pylint to ignore it
 # pylint: disable=C0103
 urlpatterns = [
     path('admin/', admin.site.urls),
+    url(r'^docs/', include_docs_urls(title='Tortuga API')),
     re_path('(?P<version>(v1))/', include('tortuga.apps.symptoms.urls')),
     re_path('(?P<version>(v1))/', include('tortuga.apps.diagnoses.urls'))
 ]
