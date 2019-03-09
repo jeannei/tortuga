@@ -1,18 +1,21 @@
+build:
+	@poetry build
+
 install:
 	@poetry install
 
-build:
-	@poetry build
+make-app:
+	@cd tortuga/apps && poetry run django-admin startapp $(NAME)
+
+sql-migrate:
+	@poetry run python manage.py makemigrations && poetry run python manage.py migrate
+
+start-server:
+	@poetry run python manage.py runserver
 
 test:
 	@poetry run python manage.py test
 
 wheel:
-	@poerty build -v
+	@poetry build -v
 
-sql-migrate:
-	@poetry run python manage.py makemigrations
-	@poetry run python manage.py migrate
-
-start-server:
-	@poetry run python manage.py runserver
