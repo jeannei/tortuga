@@ -8,6 +8,7 @@ from tortuga.apps.symptoms.__tests__.base import BaseViewTest as SymptomViewTest
 
 API_VERSION_V1 = "v1"
 VERSION = "version"
+SID = "sid"
 
 
 class BaseViewTest(APITestCase):
@@ -30,11 +31,15 @@ class BaseViewTest(APITestCase):
         """
         Setup diagnosis
         """
-        symptom = SymptomViewTest.create_symptom("sore throat")
-        d = self.create_diagnosis(symptom, "common cold")
-        print(d)
+        symptom = self.create_symptom("sore throat")
+        self.create_diagnosis(symptom, "common cold")
         self.create_diagnosis(symptom, "viral throat infection", 5)
         self.create_diagnosis(symptom, "middle ear infection", 300)
+        self.valid_symptom_id = 1
         self.valid_diagnosis_id = 1
         self.valid_diagnosis_id_alt = 3
         self.invalid_diagnosis_id = 100
+
+    @staticmethod
+    def create_symptom(name):
+        return SymptomViewTest.create_symptom(name=name)
