@@ -1,3 +1,8 @@
-from django.contrib import admin
+"""
+Register symptom for admin usage
+"""
 
-# Register your models here.
+from django.contrib import admin
+from tortuga.apps.symptoms.models import Symptom
+
+admin.site.register(Symptom)
