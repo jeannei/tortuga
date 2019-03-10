@@ -3,11 +3,12 @@ import AppComponent from './AppComponent';
 import { DONE, LOADING } from './AppConstants';
 import configs from '../configs';
 import { makeRequest } from '../util/Request';
+import { DETERMINED, NOT_DETERMINED, PENDING } from './AppConstants';
 
 const { API_BASE } = configs;
 const INITIAL_STATE = {
   diagnoses: [],
-  isDiagnosisConfirmed: false,
+  diagnosisStatus: NOT_DETERMINED,
   isDialogOpen: false,
   selectedSymptom: {},
   status: DONE
@@ -40,12 +41,17 @@ function withDataHandlers(WrappedComponent) {
     }
 
     handleCloseDialog = () => {
-      this.setState({ isDialogOpen: false, isDiagnosisConfirmed: false });
+      this.setState({ isDialogOpen: false, diagnosisStatus: PENDING });
     };
 
     handleCloseDialogConfirm = (diagnosis) => {
       this.confirmDiagnosis(diagnosis);
-      this.setState({ isDialogOpen: false, isDiagnosisConfirmed: true });
+      this.setState({ isDialogOpen: false, diagnosisStatus: DETERMINED });
+    }
+
+    handleDiagnosisSlector = (diagnosis) => {
+      this.confirmDiagnosis(diagnosis);
+      this.setState({ diagnosisStatus: DETERMINED });
     }
 
     handleRefresh = () => {
@@ -62,15 +68,16 @@ function withDataHandlers(WrappedComponent) {
     }
 
     render() {
-      const { diagnoses, isDiagnosisConfirmed, isDialogOpen, status, selectedSymptom } = this.state;
+      const { diagnoses, diagnosisStatus, isDialogOpen, status, selectedSymptom } = this.state;
       return <WrappedComponent
         confirmDiagnosis={this.confirmDiagnosis}
         diagnoses={diagnoses}
         handleCloseDialog={this.handleCloseDialog}
         handleCloseDialogConfirm={this.handleCloseDialogConfirm}
+        handleDiagnosisSlector={this.handleDiagnosisSlector}
         handleRefresh={this.handleRefresh}
         handleSelectChange={this.handleSelectChange}
-        isDiagnosisConfirmed={isDiagnosisConfirmed}
+        diagnosisStatus={diagnosisStatus}
         isDialogOpen={isDialogOpen}
         status={status}
         selectedSymptom={selectedSymptom}

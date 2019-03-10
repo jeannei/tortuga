@@ -25,7 +25,10 @@ class SelectComponent extends Component {
     data: PropTypes.array.isRequired,
     disabled: PropTypes.bool,
     handleChange: PropTypes.func.isRequired,
-    selectedValue: PropTypes.object,
+    selectedValue: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object,
+    ]).isRequired,
     status: PropTypes.string.isRequired
   }
 
@@ -44,13 +47,13 @@ class SelectComponent extends Component {
     this.props.handleChange(value);
   };
 
-  renderMenuItems = (items) => {
-    return items.map(this.renderMenuItem);
-  }
-
   renderMenuItem(item, index) {
     const { id, name } = item;
     return <MenuItem key={id} value={item}>{name}</MenuItem>;
+  }
+
+  renderMenuItems = (items) => {
+    return items.map(this.renderMenuItem);
   }
 
   render() {

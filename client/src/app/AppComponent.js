@@ -9,15 +9,18 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import styles from './App.css';
 import SelectComponent from '../select/SelectContainer';
-import Dialog from '../dialog/DialogComponent';
+import DialogComponent from '../dialog/DialogComponent';
+import FullScreenDialogCompnent from '../dialog/FullScreenDialogComponent';
+import { DETERMINED, PENDING } from './AppConstants';
 
 export default class AppComponent extends Component {
   static propTypes = {
     diagnoses: PropTypes.array,
-    isDiagnosisConfirmed: PropTypes.bool,
+    diagnosisStatus: PropTypes.string.isRequired,
     isDialogOpen: PropTypes.bool.isRequired,
     handleCloseDialog: PropTypes.func.isRequired,
     handleCloseDialogConfirm: PropTypes.func.isRequired,
+    handleDiagnosisSlector: PropTypes.func.isRequired,
     handleRefresh: PropTypes.func.isRequired,
     handleSelectChange: PropTypes.func.isRequired,
     status: PropTypes.string,
@@ -42,18 +45,23 @@ export default class AppComponent extends Component {
   }
 
   renderDiagnosis(totalFrequencies, item, index) {
-    const text = `${item.name} - ${item.frequency / totalFrequencies * 100}%`
-    return <ListItemText key={index} primary={text} />
+    const text = `${item.name} - ${item.frequency / totalFrequencies * 100}%
+    of people had a similar issue.`
+    return (
+      <ListItem key={index}>
+        <ListItemText primary={text} />
+      </ListItem>
+    );
   }
 
   renderDialog() {
     const { topDiagnosis } = this.state;
     const { handleCloseDialog, isDialogOpen, selectedSymptom } = this.props;
     return (
-      <Dialog
+      <DialogComponent
         confirmText='Yes'
         denyText='No'
-        description={`Sounds like you might have a ${topDiagnosis.name}`}
+        description={`Sounds like you might have a ${topDiagnosis.name}.`}
         handleClose={handleCloseDialog}
         handleCloseConfirm={this.handleCloseDialogConfirm}
         handleCloseDeny={handleCloseDialog}
@@ -73,10 +81,19 @@ export default class AppComponent extends Component {
     );
   }
 
-  render() {
-    const { topDiagnosis } = this.state;
-    const { handleRefresh, handleSelectChange, isDiagnosisConfirmed, selectedSymptom } = this.props;
+  renderDiagnosesSelector = () => {
+    const { diagnoses, handleDiagnosisSlector, selectedSymptom } = this.props;
+    const title = `Okay, let's figure this out together. Pick a cause of your symptom ${selectedSymptom.name}`;
+    return <FullScreenDialogCompnent
+      data={diagnoses}
+      handleClick={handleDiagnosisSlector}
+      isOpen={true}
+      title={title}
+    />
+  }
 
+  render() {
+    const { diagnosisStatus, handleRefresh, handleSelectChange, selectedSymptom } = this.props;
     return (
       <div>
         <AppBar position='static' className={styles.appBar}>
@@ -95,7 +112,8 @@ export default class AppComponent extends Component {
           selectedValue={selectedSymptom.id ? selectedSymptom : ''}
         />
         {this.renderDialog()}
-        {isDiagnosisConfirmed && this.renderDiagnoses()}
+        {diagnosisStatus === DETERMINED && this.renderDiagnoses()}
+        {diagnosisStatus === PENDING && this.renderDiagnosesSelector()}
       </div>
     );
   }
