@@ -10,10 +10,7 @@ import Select from '@material-ui/core/Select';
 import { DONE } from './SelectConstants';
 
 const styles = theme => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
+  root: {},
   formControl: {
     margin: theme.spacing.unit,
     minWidth: 180,
@@ -28,11 +25,11 @@ class SelectComponent extends Component {
     data: PropTypes.array.isRequired,
     disabled: PropTypes.bool,
     handleChange: PropTypes.func.isRequired,
+    selectedValue: PropTypes.object,
     status: PropTypes.string.isRequired
   }
 
   state = {
-    selectedValue: '',
     labelWidth: 0,
   };
 
@@ -44,7 +41,6 @@ class SelectComponent extends Component {
 
   handleChange = event => {
     const value = event.target.value;
-    this.setState({ selectedValue: value });
     this.props.handleChange(value);
   };
 
@@ -58,8 +54,7 @@ class SelectComponent extends Component {
   }
 
   render() {
-    const { selectedValue } = this.state;
-    const { data, classes, label, status, disabled } = this.props;
+    const { data, classes, label, status, disabled, selectedValue } = this.props;
 
     return (
       <form className={classes.root} autoComplete='off'>

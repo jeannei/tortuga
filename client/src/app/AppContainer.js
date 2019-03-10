@@ -5,18 +5,19 @@ import configs from '../configs';
 import { makeRequest } from '../util/Request';
 
 const { API_BASE } = configs;
+const INITIAL_STATE = {
+  diagnoses: [],
+  isDiagnosisConfirmed: false,
+  isDialogOpen: false,
+  selectedSymptom: {},
+  status: DONE
+};
 
 function withDataHandlers(WrappedComponent) {
   return class extends Component {
     constructor(props) {
       super(props);
-      this.state = {
-        diagnoses: [],
-        isDiagnosisConfirmed: false,
-        isDialogOpen: false,
-        selectedSymptom: {},
-        status: DONE
-      };
+      this.state = INITIAL_STATE;
     }
 
     confirmDiagnosis = async (diagnosis) => {
@@ -47,6 +48,10 @@ function withDataHandlers(WrappedComponent) {
       this.setState({ isDialogOpen: false, isDiagnosisConfirmed: true });
     }
 
+    handleRefresh = () => {
+      this.setState(INITIAL_STATE);
+    }
+
     handleSelectChange = (value) => {
       this.setState({ selectedSymptom: value });
       this.fetchDiagnoses(value.id);
@@ -63,6 +68,7 @@ function withDataHandlers(WrappedComponent) {
         diagnoses={diagnoses}
         handleCloseDialog={this.handleCloseDialog}
         handleCloseDialogConfirm={this.handleCloseDialogConfirm}
+        handleRefresh={this.handleRefresh}
         handleSelectChange={this.handleSelectChange}
         isDiagnosisConfirmed={isDiagnosisConfirmed}
         isDialogOpen={isDialogOpen}
