@@ -4,7 +4,7 @@ export default class ApiError extends Error {
     super(...params);
 
     // Maintains proper stack trace for where our error was thrown (only available on V8)
-    if (Error.captureStackTrace) {
+    if (typeof Error.captureStackTrace === 'function') {
       Error.captureStackTrace(this, ApiError);
     }
 
