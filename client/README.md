@@ -3,6 +3,10 @@
 This app points to `http:localhost:8000`, which is the api. The sever must be up and running,
 please see server docs for more instruction.
 
+## Dependencies
+
+This projects relies on `node version 8` or higher and `npm version 6` or higher.
+
 ## Available Scripts
 
 In the project directory, you can run:
