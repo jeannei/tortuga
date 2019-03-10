@@ -1,6 +1,6 @@
 # Frontend App
 
-This app points to `http:localhost:8000`, which is the api. The sever must be up and running,
+This app points to `http://localhost:8000`, which is the api. The sever must be up and running,
 please see server docs for more instruction.
 
 ## Dependencies
