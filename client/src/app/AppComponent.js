@@ -24,44 +24,38 @@ export default class AppComponent extends Component {
     handleRefresh: PropTypes.func.isRequired,
     handleSelectChange: PropTypes.func.isRequired,
     status: PropTypes.string,
+    selectedDiagnosis: PropTypes.object,
     selectedSymptom: PropTypes.object,
   };
 
-  state = {
-    topDiagnosis: {}
-  };
-
-  componentWillReceiveProps(nextProps) {
-    const { diagnoses } = nextProps;
-    if (diagnoses.length > 0) {
-      this.setState({ topDiagnosis: diagnoses[0] });
-    }
-  }
-
   handleCloseDialogConfirm = () => {
-    const { topDiagnosis } = this.state;
-    const { handleCloseDialogConfirm } = this.props;
-    handleCloseDialogConfirm(topDiagnosis);
+    const { handleCloseDialogConfirm, selectedDiagnosis } = this.props;
+    handleCloseDialogConfirm(selectedDiagnosis);
   }
 
-  renderDiagnosis(totalFrequencies, item, index) {
+  renderDiagnosis = (totalFrequencies, item, index) => {
+    const { selectedDiagnosis } = this.props;
     const text = `${item.name} - ${item.frequency / totalFrequencies * 100}%
     of people had a similar issue.`
+    let style = {};
+
+    if (item.id === selectedDiagnosis.id) {
+      style = { backgroundColor: 'yellow' };
+    }
     return (
-      <ListItem key={index}>
+      <ListItem key={index} style={style}>
         <ListItemText primary={text} />
       </ListItem>
     );
   }
 
   renderDialog() {
-    const { topDiagnosis } = this.state;
-    const { handleCloseDialog, isDialogOpen, selectedSymptom } = this.props;
+    const { handleCloseDialog, isDialogOpen, selectedSymptom, selectedDiagnosis } = this.props;
     return (
       <DialogComponent
         confirmText='Yes'
         denyText='No'
-        description={`Sounds like you might have a ${topDiagnosis.name}.`}
+        description={`Sounds like you might have a ${selectedDiagnosis.name}.`}
         handleClose={handleCloseDialog}
         handleCloseConfirm={this.handleCloseDialogConfirm}
         handleCloseDeny={handleCloseDialog}
@@ -82,12 +76,20 @@ export default class AppComponent extends Component {
   }
 
   renderDiagnosesSelector = () => {
-    const { diagnoses, handleDiagnosisSlector, selectedSymptom } = this.props;
+    const {
+      diagnoses,
+      diagnosisStatus,
+      handleDiagnosisSlector,
+      selectedDiagnosis,
+      selectedSymptom
+    } = this.props;
+
     const title = `Okay, let's figure this out together. Pick a cause of your symptom ${selectedSymptom.name}`;
+    const newData = diagnoses.filter(item => item.id !== selectedDiagnosis.id);
     return <FullScreenDialogCompnent
-      data={diagnoses}
+      data={newData}
       handleClick={handleDiagnosisSlector}
-      isOpen={true}
+      isOpen={diagnosisStatus === PENDING}
       title={title}
     />
   }
@@ -113,7 +115,7 @@ export default class AppComponent extends Component {
         />
         {this.renderDialog()}
         {diagnosisStatus === DETERMINED && this.renderDiagnoses()}
-        {diagnosisStatus === PENDING && this.renderDiagnosesSelector()}
+        {this.renderDiagnosesSelector()}
       </div>
     );
   }

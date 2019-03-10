@@ -10,6 +10,7 @@ const INITIAL_STATE = {
   diagnoses: [],
   diagnosisStatus: NOT_DETERMINED,
   isDialogOpen: false,
+  selectedDiagnosis: {},
   selectedSymptom: {},
   status: DONE
 };
@@ -37,7 +38,12 @@ function withDataHandlers(WrappedComponent) {
       this.setState({ status: LOADING });
       const { payload } = await makeRequest(`${API_BASE}/v1/symptoms/${sid}/diagnoses`);
       this._sortDescending(payload);
-      this.setState({ diagnoses: payload, status: DONE, isDialogOpen: true });
+      this.setState({
+        diagnoses: payload,
+        status: DONE,
+        isDialogOpen: true,
+        selectedDiagnosis: payload[0]
+      });
     }
 
     handleCloseDialog = () => {
@@ -46,12 +52,12 @@ function withDataHandlers(WrappedComponent) {
 
     handleCloseDialogConfirm = (diagnosis) => {
       this.confirmDiagnosis(diagnosis);
-      this.setState({ isDialogOpen: false, diagnosisStatus: DETERMINED });
+      this.setState({ isDialogOpen: false, diagnosisStatus: DETERMINED, selectedDiagnosis: diagnosis });
     }
 
     handleDiagnosisSlector = (diagnosis) => {
       this.confirmDiagnosis(diagnosis);
-      this.setState({ diagnosisStatus: DETERMINED });
+      this.setState({ diagnosisStatus: DETERMINED, selectedDiagnosis: diagnosis });
     }
 
     handleRefresh = () => {
@@ -68,7 +74,15 @@ function withDataHandlers(WrappedComponent) {
     }
 
     render() {
-      const { diagnoses, diagnosisStatus, isDialogOpen, status, selectedSymptom } = this.state;
+      const {
+        diagnoses,
+        diagnosisStatus,
+        isDialogOpen,
+        status,
+        selectedDiagnosis,
+        selectedSymptom
+      } = this.state;
+
       return <WrappedComponent
         confirmDiagnosis={this.confirmDiagnosis}
         diagnoses={diagnoses}
@@ -80,6 +94,7 @@ function withDataHandlers(WrappedComponent) {
         diagnosisStatus={diagnosisStatus}
         isDialogOpen={isDialogOpen}
         status={status}
+        selectedDiagnosis={selectedDiagnosis}
         selectedSymptom={selectedSymptom}
         {...this.props}
       />;
