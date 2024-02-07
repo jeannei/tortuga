@@ -6,7 +6,7 @@ authors = ["Jean Nei <jeanbhs09@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
-django = "^2.1"
+django = "^3.2"
 djangorestframework = "^3.9"
 django-cors-headers = "^2.5"
 
